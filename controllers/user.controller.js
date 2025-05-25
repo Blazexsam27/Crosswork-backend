@@ -1,9 +1,8 @@
 const userService = require("../services/user.service");
 
 exports.getUser = async (req, res) => {
-  const user = await userService.getUser(req.query.id);
+  const user = await userService.getUser(req.user.id);
 
-  console.log("user", req.query.id);
   res.status(200).json(user);
 };
 

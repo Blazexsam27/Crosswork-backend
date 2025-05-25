@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String },
     timezone: String,
     subjects: [String],
     availability: [String], // e.g. ["Mon 6-8pm", "Sat 10am"]

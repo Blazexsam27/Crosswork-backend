@@ -3,7 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const socketIo = require("socket.io");
-require("./config/passport");
+const passport = require("passport");
+require("./config/passport.config");
 
 // Routes Imports
 const authRoutes = require("./routes/auth.routes");
@@ -31,7 +32,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/messages", messageRoutes);
-app.use("/api/auth", require("./routes/auth.route"));
 
 // Database
 const connectDB = require("./db");
