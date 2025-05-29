@@ -11,6 +11,8 @@ const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
 const roomRoutes = require("./routes/room.routes");
 const messageRoutes = require("./routes/message.routes");
+const notificationRoutes = require("./routes/notification.routes");
+const connectRoutes = require("./routes/connect.routes");
 
 const app = express();
 const server = http.createServer(app); // Create HTTP server from app
@@ -32,6 +34,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/connect", connectRoutes);
 
 // Database
 const connectDB = require("./db");
