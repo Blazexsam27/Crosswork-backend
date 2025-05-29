@@ -10,6 +10,18 @@ const sendMessageSchema = Joi.object({
 
 const messageLimit = new Map();
 
+// Add this helper function
+async function scheduleRoomCleanup(roomId) {
+  // Check after 5 minutes if room is still empty
+  setTimeout(async () => {
+    const room = await roomService.getRoomById(roomId);
+    if (room && room.participants.length === 0) {
+      await roomService.deleteRoomById(roomId);
+      console.log(`Deleted empty room ${roomId} after delay`);
+    }
+  }, 60 * 1000); // 1 minute
+}
+
 module.exports = (io) => {
   io.use(socketAuth);
 
@@ -79,8 +91,6 @@ module.exports = (io) => {
         socket.joinedRooms.delete(roomId);
         socket.to(roomId).emit("user-left", { userId: uid });
 
-        // delete the room record from mongo if there are no participants
-
         console.log(`${uid} left room ${roomId}`);
       } catch (error) {
         console.error("Leave room error: ", error);
@@ -102,8 +112,8 @@ module.exports = (io) => {
             .then((room) => room.participants);
 
           if (participants.length === 0) {
-            await roomService.deleteRoomById(roomId);
-            console.log(`Deleted empty room ${roomId}`);
+            scheduleRoomCleanup(roomId);
+            // await roomService.deleteRoomById(roomId);
           }
         }
       } catch (error) {
