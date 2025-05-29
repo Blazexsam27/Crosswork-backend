@@ -20,3 +20,13 @@ exports.getRoomById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.deleteRoomById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const room = await roomService.deleteRoomById(id);
+    res.status(200).json(room);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

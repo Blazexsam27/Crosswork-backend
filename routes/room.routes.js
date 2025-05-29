@@ -9,4 +9,6 @@ router.post("/", auth, roomController.createRoom);
 // GET /api/rooms/:id
 router.get("/:id", auth, roomController.getRoomById);
 
+router.delete("/:id", auth, roomController.deleteRoomById);
+
 module.exports = router;

@@ -19,7 +19,7 @@ module.exports = (io) => {
     socket.joinedRooms = new Set();
 
     socket.on("join-room", async ({ roomId }) => {
-      const uid = socket.user._id.toString();
+      const uid = socket.user.id.toString();
       socket.join(roomId);
       socket.joinedRooms.add(roomId);
 
@@ -33,7 +33,7 @@ module.exports = (io) => {
 
     socket.on("send-message", async ({ roomId, message }) => {
       try {
-        const uid = socket.user._id.toString();
+        const uid = socket.user.id.toString();
         const now = Date.now();
 
         if (!messageLimit.has(uid)) {
@@ -73,11 +73,13 @@ module.exports = (io) => {
 
     socket.on("leave-room", async ({ roomId }) => {
       try {
-        const uid = socket.user._id.toString();
+        const uid = socket.user?._id?.toString();
         await roomService.removeParticipant(roomId, uid);
         socket.leave(roomId);
         socket.joinedRooms.delete(roomId);
         socket.to(roomId).emit("user-left", { userId: uid });
+
+        // delete the room record from mongo if there are no participants
 
         console.log(`${uid} left room ${roomId}`);
       } catch (error) {
@@ -89,8 +91,7 @@ module.exports = (io) => {
 
     socket.on("disconnect", async () => {
       try {
-        const uid = socket.user._id.toString();
-        console.log("Socket Disconnected ...", socket.id);
+        const uid = socket.user.id.toString();
 
         for (const roomId of socket.joinedRooms) {
           await roomService.removeParticipant(roomId, uid);

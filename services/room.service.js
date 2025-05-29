@@ -14,11 +14,13 @@ exports.deleteRoomById = async (roomId) => {
 };
 
 exports.addParticipant = async (roomId, userId) => {
-  return await Room.findByIdAndUpdate(
+  await Room.findByIdAndUpdate(
     roomId,
     { $addToSet: { participants: userId } },
     { new: true }
   ).populate("participants", "name email");
+
+  return await Room.findById(roomId).populate("participants", "name email");
 };
 
 exports.removeParticipant = async (roomId, userId) => {
