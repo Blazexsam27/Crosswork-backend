@@ -8,6 +8,11 @@ router.post("/", auth, roomController.createRoom);
 
 // GET /api/rooms/:id
 router.get("/:id", auth, roomController.getRoomById);
+router.get(
+  "/:id/get-all-participants",
+  auth,
+  roomController.getAllParticipants
+);
 
 router.delete("/:id", auth, roomController.deleteRoomById);
 

@@ -30,18 +30,27 @@ module.exports = (io) => {
 
     socket.joinedRooms = new Set();
 
-    socket.on("join-room", async ({ roomId }) => {
-      const uid = socket.user.id.toString();
-      socket.join(roomId);
-      socket.joinedRooms.add(roomId);
+    socket.on(
+      "join-room",
+      async ({ roomId, name, email, isVideoOn, isMuted }) => {
+        const userId = socket.user.id;
+        socket.join(roomId);
+        socket.joinedRooms.add(roomId);
 
-      const updatedRoom = await roomService.addParticipant(roomId, uid);
+        const updatedRoom = await roomService.addParticipant(roomId, {
+          userId,
+          isVideoOn,
+          isMuted,
+          name,
+          email,
+        });
 
-      io.to(roomId).emit("user-joined", {
-        userId: uid,
-        participant: updatedRoom.participants,
-      });
-    });
+        io.to(roomId).emit("user-joined", {
+          userId,
+          participant: updatedRoom.participants,
+        });
+      }
+    );
 
     socket.on("send-message", async ({ roomId, message }) => {
       try {
@@ -85,7 +94,7 @@ module.exports = (io) => {
 
     socket.on("leave-room", async ({ roomId }) => {
       try {
-        const uid = socket.user?._id?.toString();
+        const uid = socket.user?.id?.toString();
         await roomService.removeParticipant(roomId, uid);
         socket.leave(roomId);
         socket.joinedRooms.delete(roomId);
