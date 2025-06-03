@@ -13,6 +13,7 @@ const roomRoutes = require("./routes/room.routes");
 const messageRoutes = require("./routes/message.routes");
 const notificationRoutes = require("./routes/notification.routes");
 const connectRoutes = require("./routes/connect.routes");
+const recommendationRoutes = require("./routes/recommendation.routes");
 
 const app = express();
 const server = http.createServer(app); // Create HTTP server from app
@@ -36,6 +37,7 @@ app.use("/api/rooms", roomRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/connect", connectRoutes);
+app.use("/api/recommend", recommendationRoutes);
 
 // Database
 const connectDB = require("./db");
