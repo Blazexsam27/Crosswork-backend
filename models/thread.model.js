@@ -30,6 +30,7 @@ const threadSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
+
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,

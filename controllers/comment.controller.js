@@ -9,9 +9,18 @@ exports.createComment = async (req, res) => {
   }
 };
 
-exports.getCommentsByPostId = async (req, res) => {
+exports.getCommentsByThreadId = async (req, res) => {
   try {
-    const response = await commentService.getCommentsByPostId(req.params.id);
+    const response = await commentService.getCommentsByThreadId(req.params.id);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getCommentById = async (req, res) => {
+  try {
+    const response = await commentService.getCommentById(req.params.id);
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ message: error.message });

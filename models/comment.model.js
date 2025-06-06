@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const voteSchema = mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
+  voteType: {
+    type: String,
+    required: true,
+  },
+});
+
 const commentSchema = mongoose.Schema(
   {
     content: {
@@ -26,12 +37,18 @@ const commentSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    votes: [voteSchema],
     replies: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment",
       },
     ],
+    parentComment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+      default: null,
+    },
   },
   {
     timestamps: true,

@@ -1,5 +1,6 @@
 const Thread = require("../models/thread.model");
-
+const Comment = require("../models/comment.model");
+const { buildCommentTree } = require("../utils/comment.util");
 exports.createThread = async (thread) => {
   try {
     return await Thread.create(thread);
@@ -10,7 +11,18 @@ exports.createThread = async (thread) => {
 
 exports.getThreadById = async (threadId) => {
   try {
-    return await Thread.findById(threadId);
+    const thread = await Thread.findById(threadId).lean();
+    const comments = await Comment.find({ post: threadId })
+      .populate("author", "name email")
+      .populate("likes", "name")
+      .lean();
+
+    const threadedComments = buildCommentTree(comments);
+
+    return {
+      ...thread,
+      comments: threadedComments,
+    };
   } catch (error) {
     throw new Error(error);
   }

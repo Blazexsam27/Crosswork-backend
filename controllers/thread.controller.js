@@ -11,7 +11,8 @@ exports.createThread = async (req, res) => {
 
 exports.getThreadById = async (req, res) => {
   try {
-    const response = await threadService.getThreadById(req.param.id);
+    console.dir(req.params);
+    const response = await threadService.getThreadById(req.params.id);
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ message: error.message });
