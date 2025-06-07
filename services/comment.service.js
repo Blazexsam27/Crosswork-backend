@@ -52,9 +52,11 @@ exports.getCommentById = async (commentId) => {
   }
 };
 
-exports.updateComment = async (commentId, comment) => {
+exports.updateComment = async (commentId, updatedData) => {
   try {
-    return await Comment.findByIdAndUpdate(commentId, comment, { new: true });
+    return await Comment.findByIdAndUpdate(commentId, updatedData, {
+      new: true,
+    });
   } catch (error) {
     throw new Error(error);
   }
