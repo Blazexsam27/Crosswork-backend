@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     providerId: {
       type: String, // Google/GitHub user ID
     },
-    connections: [{ type: mongoose.Schema.Types.ObjectId }],
+    connections: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     pendingRequests: [{ type: mongoose.Schema.Types.ObjectId }],
     sentRequests: [{ type: mongoose.Schema.Types.ObjectId }],
   },

@@ -43,6 +43,11 @@ const threadSchema = mongoose.Schema(
       },
     ],
     votes: [voteSchema],
+    tags: [
+      {
+        type: String,
+      },
+    ],
   },
   { timestamps: true }
 );

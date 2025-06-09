@@ -16,13 +16,15 @@ const connectRoutes = require("./routes/connect.routes");
 const recommendationRoutes = require("./routes/recommendation.routes");
 const threadRoutes = require("./routes/thread.routes");
 const commentRoutes = require("./routes/comment.routes");
+const privateMessageRoutes = require("./routes/privateMessage.routes");
 
 const app = express();
 const server = http.createServer(app); // Create HTTP server from app
 const io = socketIo(server, {
   cors: {
-    origin: "*", // Allow frontend origins or restrict as needed
+    origin: process.env.FRONTEND_URL, // Allow frontend origins or restrict as needed
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
@@ -42,7 +44,7 @@ app.use("/api/connect", connectRoutes);
 app.use("/api/recommend", recommendationRoutes);
 app.use("/api/threads", threadRoutes);
 app.use("/api/comments", commentRoutes);
-
+app.use("/api/private-messages", privateMessageRoutes);
 // Database
 const connectDB = require("./db");
 

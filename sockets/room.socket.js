@@ -1,6 +1,7 @@
 const socketAuth = require("../middlewares/socketAuth.middleware");
 const roomService = require("../services/room.service");
 const messageService = require("../services/message.service");
+const PrivateMessage = require("../models/privateMessage.model");
 const Joi = require("joi");
 
 const sendMessageSchema = Joi.object({
@@ -128,6 +129,61 @@ module.exports = (io) => {
       } catch (error) {
         console.error("Disconnect cleanup error:", error);
       }
+    });
+  });
+
+  const chatNamespace = io.of("/chat");
+  chatNamespace.on("connection", (socket) => {
+    console.log("Messaging Socket Connected ...", socket.id);
+
+    socket.on("join", (userId) => {
+      socket.join(userId);
+      console.log(`User ${userId} joined a private chat room`);
+    });
+
+    socket.on("private-message", async ({ sender, receiver, content }) => {
+      try {
+        const message = new PrivateMessage({
+          sender,
+          receiver,
+          content,
+        });
+        await message.save();
+
+        console.log("Emitting now ----->>>");
+        chatNamespace.to(sender).emit("private-message", message);
+        chatNamespace.to(receiver).emit("private-message", message);
+
+        // update the read status if receiver is online
+        if (io.sockets.adapter.rooms.has(receiver)) {
+          message.read = true;
+
+          await message.save();
+
+          io.to(receiver).emit("message-read", message._id);
+        }
+      } catch (error) {
+        console.error("Error while sending message:", error);
+      }
+    });
+
+    socket.on("mark-read", async (messageId) => {
+      try {
+        const message = await PrivateMessage.findByIdAndUpdate(
+          messageId,
+          { read: true },
+          { new: true }
+        );
+        if (message) {
+          io.to(message.sender.toString()).emit("message-read", messageId);
+        }
+      } catch (error) {
+        console.error("Error marking message as read:", err);
+      }
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Client disconnected:", socket.id);
     });
   });
 };

@@ -75,3 +75,25 @@ exports.declineConnectionRequest = async (receiverId, senderId) => {
 
   return true;
 };
+
+exports.disconnect = async (receiverId, senderId) => {
+  try {
+    const receiver = await User.findById(receiverId);
+    const sender = await User.findById(senderId);
+
+    receiver.connections = receiver.connections.filter(
+      (id) => !id.equals(senderId)
+    );
+
+    sender.connections = sender.connections.filter(
+      (id) => !id.equals(receiverId)
+    );
+
+    await receiver.save();
+    await sender.save();
+
+    return true;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
