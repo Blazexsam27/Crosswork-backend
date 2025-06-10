@@ -3,6 +3,7 @@ const passport = require("passport");
 const { register, login } = require("../controllers/auth.controller");
 const { generateJwt } = require("../utils/jwt.utils");
 const router = express.Router();
+require("dotenv").config();
 
 router.post("/register", register);
 router.post("/login", login);
@@ -19,7 +20,7 @@ router.get(
   passport.authenticate("google", { session: false }),
   (req, res) => {
     const token = generateJwt(req.user); // Returns JWT
-    res.redirect(`http://localhost:5173/oauth-success?token=${token}`);
+    res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
   }
 );
 
@@ -33,7 +34,7 @@ router.get(
   passport.authenticate("github", { session: false }),
   (req, res) => {
     const token = generateJwt(req.user);
-    res.redirect(`http://localhost:5173/oauth-success?token=${token}`);
+    res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
   }
 );
 
