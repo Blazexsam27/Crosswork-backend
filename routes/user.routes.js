@@ -8,7 +8,7 @@ const {
 const auth = require("../middlewares/auth.middleware");
 const router = express.Router();
 
-router.get("/get-user/:id", auth, getUser);
+router.get("/get-user", auth, getUser);
 router.get("/get-all-users", auth, getAllUsers);
 router.get("/get-all-connections/:id", auth, getAllConnections);
 router.put("/update-user", auth, updateUser);
