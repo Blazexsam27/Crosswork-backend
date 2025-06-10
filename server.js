@@ -34,6 +34,10 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
+app.use("/health", (req, res) => {
+  res.send("Hi there! I'm healthy.");
+});
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
