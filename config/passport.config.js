@@ -8,7 +8,10 @@ passport.use(
     {
       clientID: process.env.GOOGLE_OAUTH_CLIENT_ID,
       clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-      callbackURL: "/api/auth/google/callback",
+      callbackURL:
+        process.env.NODE_ENV === "production"
+          ? "https://crosswork-backend-h07z.onrender.com/api/auth/google/callback"
+          : "http://localhost:8080/api/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -37,7 +40,10 @@ passport.use(
     {
       clientID: process.env.GITHUB_OAUTH_CLIENT_ID,
       clientSecret: process.env.GITHUB_OAUTH_CLIENT_SECRET,
-      callbackURL: "/api/auth/github/callback",
+      callbackURL:
+        process.env.NODE_ENV === "production"
+          ? "https://crosswork-backend-h07z.onrender.com/api/auth/github/callback"
+          : "http://localhost:8080/api/auth/github/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
