@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
     connections: [String],
     authProvider: {
       type: String, // "google", "github", "local"
-      required: true,
+      default: "local",
     },
     providerId: {
       type: String, // Google/GitHub user ID
