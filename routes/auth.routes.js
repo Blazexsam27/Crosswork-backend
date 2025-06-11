@@ -1,6 +1,11 @@
 const express = require("express");
 const passport = require("passport");
-const { register, login } = require("../controllers/auth.controller");
+const {
+  register,
+  login,
+  forgotPassword,
+  resetPassword,
+} = require("../controllers/auth.controller");
 const { generateJwt } = require("../utils/jwt.utils");
 const router = express.Router();
 require("dotenv").config();
@@ -37,5 +42,9 @@ router.get(
     res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
   }
 );
+
+// forgot pass
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token", resetPassword);
 
 module.exports = router;

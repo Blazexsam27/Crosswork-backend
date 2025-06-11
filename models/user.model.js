@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema(
     connections: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     pendingRequests: [{ type: mongoose.Schema.Types.ObjectId }],
     sentRequests: [{ type: mongoose.Schema.Types.ObjectId }],
+
+    // needed if user forgets his/her pass
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
   },
 
   { timestamps: true }
