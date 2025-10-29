@@ -22,7 +22,7 @@ const app = express();
 const server = http.createServer(app); // Create HTTP server from app
 const io = socketIo(server, {
   cors: {
-    origin: process.env.FRONTEND_URL, // Allow frontend origins or restrict as needed
+    origin: "*", // Allow frontend origins or restrict as needed
     methods: ["GET", "POST"],
     credentials: true,
   },
