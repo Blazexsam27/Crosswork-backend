@@ -14,5 +14,6 @@ router.post(
 router.get("/:id", auth, threadController.getThreadById);
 router.put("/:id", auth, threadController.updateThread);
 router.delete("/:id", auth, threadController.deleteThread);
+router.get("/categories/list", auth, threadController.getAllCategories);
 
 module.exports = router;

@@ -39,6 +39,14 @@ exports.getAllThreads = async () => {
   }
 };
 
+exports.getAllCategories = async () => {
+  try {
+    return await Thread.distinct("category");
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 exports.getThreadsByCategory = async (category) => {
   try {
     return await Thread.find({ category }).sort({ createdAt: -1 });

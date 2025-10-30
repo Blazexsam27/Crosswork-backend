@@ -39,6 +39,15 @@ exports.getThreadsByCategory = async (req, res) => {
   }
 };
 
+exports.getAllCategories = async (req, res) => {
+  try {
+    const response = await threadService.getAllCategories();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.getThreadByCategoryAndUser = async (req, res) => {
   try {
     const response = await threadService.getThreadsByCategoryAndUser(req.body);
