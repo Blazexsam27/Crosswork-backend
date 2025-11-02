@@ -19,10 +19,14 @@ const commentRoutes = require("./routes/comment.routes");
 const privateMessageRoutes = require("./routes/privateMessage.routes");
 
 const app = express();
-const server = http.createServer(app); // Create HTTP server from app
+const server = http.createServer(app);
+
+// Define allowed origins
+const allowedOrigins = ["http://localhost:5173", "http://localhost:3000"];
+
 const io = socketIo(server, {
   cors: {
-    origin: "*", // Allow frontend origins or restrict as needed
+    origin: allowedOrigins, // Specify explicit origins instead of "*"
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -30,7 +34,12 @@ const io = socketIo(server, {
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: allowedOrigins, // Match Socket.IO CORS config
+    credentials: true,
+  })
+);
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
@@ -49,6 +58,7 @@ app.use("/api/recommend", recommendationRoutes);
 app.use("/api/threads", threadRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/private-messages", privateMessageRoutes);
+
 // Database
 const connectDB = require("./db");
 
@@ -71,4 +81,4 @@ if (require.main === module) {
   startServer();
 }
 
-module.exports = { app, server, io }; // export for testing or reuse
+module.exports = { app, server, io };

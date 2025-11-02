@@ -3,6 +3,7 @@ const {
   sendConnectionRequest,
   acceptConnectionRequest,
   disconnect,
+  cancelConnectionRequest,
 } = require("../controllers/connect.controller");
 
 const express = require("express");
@@ -13,5 +14,6 @@ router.post("/", auth, sendConnectionRequest);
 router.post("/accept", auth, acceptConnectionRequest);
 router.post("/decline", auth, acceptConnectionRequest);
 router.post("/disconnect", auth, disconnect);
+router.post("/cancel", auth, cancelConnectionRequest);
 
 module.exports = router;

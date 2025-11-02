@@ -76,6 +76,26 @@ exports.declineConnectionRequest = async (receiverId, senderId) => {
   return true;
 };
 
+exports.cancelConnectionRequest = async (senderId, receiverId) => {
+  const sender = await User.findById(senderId);
+  const receiver = await User.findById(receiverId);
+
+  if (!receiver) throw new Error("User not found.");
+
+  // Remove from pending/sent
+  receiver.pendingRequests = receiver.pendingRequests.filter(
+    (id) => !id.equals(senderId)
+  );
+  sender.sentRequests = sender.sentRequests.filter(
+    (id) => !id.equals(receiverId)
+  );
+
+  await receiver.save();
+  await sender.save();
+
+  return true;
+};
+
 exports.disconnect = async (receiverId, senderId) => {
   try {
     const receiver = await User.findById(receiverId);

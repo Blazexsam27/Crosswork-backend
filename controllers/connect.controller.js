@@ -24,6 +24,18 @@ exports.acceptConnectionRequest = async (req, res) => {
   }
 };
 
+exports.cancelConnectionRequest = async (req, res) => {
+  try {
+    const result = await connectService.cancelConnectionRequest(
+      req.query.senderId,
+      req.query.targetId
+    );
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.disconnect = async (req, res) => {
   try {
     const result = await connectService.disconnect(
