@@ -1,18 +1,12 @@
 const mongoose = require("mongoose");
 
-const voteSchema = mongoose.Schema({
-  userId: {
-    type: String,
-    required: true,
-  },
-  voteType: {
-    type: String,
-    required: true,
-  },
-});
-
 const threadSchema = mongoose.Schema(
   {
+    community: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Community",
+      index: true,
+    },
     title: {
       type: String,
       required: true,
@@ -25,6 +19,7 @@ const threadSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    media: [{ url: String, type: String }],
     author: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -42,12 +37,15 @@ const threadSchema = mongoose.Schema(
         type: String,
       },
     ],
-    votes: [voteSchema],
+    votes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Vote" }],
     tags: [
       {
         type: String,
       },
     ],
+
+    isRemoved: { type: Boolean, default: false },
+    removedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
