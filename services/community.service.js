@@ -1,4 +1,5 @@
 const Community = require("../models/community.model");
+const mongoose = require("mongoose");
 
 exports.getAllCommunities = async () => {
   try {
@@ -26,6 +27,15 @@ exports.getCommunityByName = async (name) => {
 
 exports.createCommunity = async (communityData) => {
   try {
+    const moderator = communityData.moderators;
+    communityData.moderators = [moderator];
+
+    const rules = communityData.rules ? JSON.parse(communityData.rules) : [];
+    const tags = communityData.tags ? JSON.parse(communityData.tags) : [];
+
+    communityData.rules = rules;
+    communityData.tags = tags;
+
     const community = new Community(communityData);
     return await community.save();
   } catch (error) {

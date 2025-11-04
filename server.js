@@ -17,6 +17,7 @@ const recommendationRoutes = require("./routes/recommendation.routes");
 const threadRoutes = require("./routes/thread.routes");
 const commentRoutes = require("./routes/comment.routes");
 const privateMessageRoutes = require("./routes/privateMessage.routes");
+const communityRoutes = require("./routes/community.routes");
 
 const app = express();
 const server = http.createServer(app);
@@ -58,6 +59,7 @@ app.use("/api/recommend", recommendationRoutes);
 app.use("/api/threads", threadRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/private-messages", privateMessageRoutes);
+app.use("/api/community", communityRoutes);
 
 // Database
 const connectDB = require("./db");

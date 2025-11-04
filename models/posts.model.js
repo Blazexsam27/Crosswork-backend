@@ -28,3 +28,5 @@ PostSchema.index(
   { title: "text", body: "text" },
   { weights: { title: 5, body: 1 } }
 );
+
+module.exports = mongoose.model("Post", PostSchema);
