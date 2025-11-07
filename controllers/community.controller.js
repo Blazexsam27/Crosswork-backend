@@ -12,6 +12,7 @@ exports.getAllCommunities = async (req, res) => {
 exports.getCommunityById = async (req, res) => {
   try {
     const { id } = req.params;
+
     const community = await communityService.getCommunityById(id);
     res.status(201).json(community);
   } catch (error) {

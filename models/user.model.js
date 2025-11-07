@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema(
     providerId: {
       type: String, // Google/GitHub user ID
     },
+    communities: [{ type: mongoose.Schema.Types.ObjectId, ref: "Community" }],
     connections: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     pendingRequests: [{ type: mongoose.Schema.Types.ObjectId }],
     sentRequests: [{ type: mongoose.Schema.Types.ObjectId }],
