@@ -18,6 +18,7 @@ const threadRoutes = require("./routes/thread.routes");
 const commentRoutes = require("./routes/comment.routes");
 const privateMessageRoutes = require("./routes/privateMessage.routes");
 const communityRoutes = require("./routes/community.routes");
+const postRoutes = require("./routes/posts.routes");
 
 const app = express();
 const server = http.createServer(app);
@@ -60,6 +61,7 @@ app.use("/api/threads", threadRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/private-messages", privateMessageRoutes);
 app.use("/api/community", communityRoutes);
+app.use("/api/posts", postRoutes);
 
 // Database
 const connectDB = require("./db");
