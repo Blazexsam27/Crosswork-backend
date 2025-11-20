@@ -24,7 +24,14 @@ const app = express();
 const server = http.createServer(app);
 
 // Define allowed origins
-const allowedOrigins = ["http://localhost:5173", "http://localhost:3000"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://crosswork-backend-h07z.onrender.com",
+  "https://crosswork-backend-h07z.onrender.com/*",
+  "https://crosswork-frontend.netlify.app",
+  "https://crosswork-frontend.netlify.app/*",
+];
 
 const io = socketIo(server, {
   cors: {
