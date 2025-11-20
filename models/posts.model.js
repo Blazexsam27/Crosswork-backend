@@ -2,8 +2,12 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const PostSchema = new Schema({
-  community: { type: ObjectId, ref: "Community", index: true },
-  author: { type: ObjectId, ref: "User", index: true },
+  community: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Community",
+    index: true,
+  },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
   title: { type: String, required: true, maxlength: 300 },
   body: String, // markdown
   url: String, // optional link posts
@@ -12,7 +16,7 @@ const PostSchema = new Schema({
   flair: String,
   isSticky: { type: Boolean, default: false },
   isRemoved: { type: Boolean, default: false },
-  removedBy: { type: ObjectId, ref: "User" },
+  removedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   score: { type: Number, default: 0 }, // upvotes - downvotes, denormalized
   upvotes: { type: Number, default: 0 },
   downvotes: { type: Number, default: 0 },

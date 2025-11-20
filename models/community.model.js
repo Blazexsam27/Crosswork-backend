@@ -20,12 +20,17 @@ const CommunitySchema = new Schema(
       enum: ["public", "private", "restricted"],
       default: "public",
     },
-    createdBy: { type: ObjectId, ref: "User", required: true },
-    moderators: [{ type: ObjectId, ref: "User" }],
-    membersCount: { type: Number, default: 0 },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    moderators: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    membersCount: { type: Number, default: 1 },
     postCount: { type: Number, default: 0 },
     rules: [{ title: String, body: String }],
     tags: [{ type: String }],
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   },
   { timestamps: true }
 );
