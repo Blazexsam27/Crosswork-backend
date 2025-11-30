@@ -7,16 +7,28 @@ const PostSchema = new Schema({
     ref: "Community",
     index: true,
   },
+  postType: {
+    type: String,
+    enum: ["text", "link", "image", "video"],
+    required: true,
+  },
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
   title: { type: String, required: true, maxlength: 300 },
   body: String, // markdown
-  url: String, // optional link posts
+  linkUrl: String, // optional link posts
   media: [{ url: String, type: String }],
+  isNsfw: { type: Boolean, default: false },
+  isSpoiler: { type: Boolean, default: false },
+  tags: [String],
 
   flair: String,
   isSticky: { type: Boolean, default: false },
   isRemoved: { type: Boolean, default: false },
-  removedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  removedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
+  },
   score: { type: Number, default: 0 }, // upvotes - downvotes, denormalized
   upvotes: { type: Number, default: 0 },
   downvotes: { type: Number, default: 0 },

@@ -1,5 +1,4 @@
 const Community = require("../models/community.model");
-const mongoose = require("mongoose");
 
 exports.getAllCommunities = async () => {
   try {

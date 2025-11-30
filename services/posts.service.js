@@ -19,7 +19,10 @@ exports.getPostById = async (postId) => {
 
 exports.getAllPosts = async () => {
   try {
-    return await Post.find({});
+    return await Post.find({})
+      .populate("author", "name")
+      .populate("community", "name communityIcon")
+      .sort({ createdAt: -1 });
   } catch (error) {
     throw new Error(error);
   }
@@ -27,7 +30,10 @@ exports.getAllPosts = async () => {
 
 exports.getPostsByCommunity = async (communityId) => {
   try {
-    return await Post.find({ community: communityId }).sort({ createdAt: -1 });
+    return await Post.find({ community: communityId })
+      .sort({ createdAt: -1 })
+      .populate("author", "name")
+      .populate("community", "name communityIcon");
   } catch (error) {
     throw new Error(error);
   }
