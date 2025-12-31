@@ -10,7 +10,10 @@ exports.getAllCommunities = async () => {
 
 exports.getCommunityById = async (communityId) => {
   try {
-    return await Community.findById(communityId);
+    return await Community.findById(communityId).populate(
+      "moderators",
+      "name email profilePic"
+    );
   } catch (error) {
     throw new Error(error);
   }
@@ -18,7 +21,10 @@ exports.getCommunityById = async (communityId) => {
 
 exports.getCommunityByName = async (name) => {
   try {
-    return await Community.findOne({ name });
+    return await Community.findOne({ name }).populate(
+      "moderators",
+      "name email profilePic"
+    );
   } catch (error) {
     throw new Error(error);
   }

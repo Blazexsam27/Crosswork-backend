@@ -1,9 +1,17 @@
 const Post = require("../models/posts.model");
 const Comment = require("../models/comment.model");
+const Community = require("../models/community.model");
 
 exports.createPost = async (post) => {
   try {
-    return await Post.create(post);
+    const createdPost = await Post.create(post);
+    // update community post array and count
+
+    await Community.findByIdAndUpdate(post.community, {
+      $inc: { postCount: 1 },
+      $push: { posts: createdPost._id },
+    });
+    return post;
   } catch (error) {
     throw new Error(error);
   }

@@ -45,3 +45,25 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json(error.message);
   }
 };
+
+exports.joinCommunity = async (req, res) => {
+  try {
+    const { communityId } = req.params;
+    const userId = req.user.id;
+    const user = await userService.joinCommunity(userId, communityId);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.leaveCommunity = async (req, res) => {
+  try {
+    const { communityId } = req.params;
+    const userId = req.user.id;
+    const user = await userService.leaveCommunity(userId, communityId);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

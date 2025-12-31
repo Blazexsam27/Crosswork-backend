@@ -46,3 +46,43 @@ exports.deleteUser = async (id) => {
     throw new Error(error);
   }
 };
+
+exports.joinCommunity = async (userId, communityId) => {
+  try {
+    const user = await User.findById(userId);
+    if (!user.communities.includes(communityId)) {
+      user.communities.push(communityId);
+      await user.save();
+    }
+
+    // Update community member count
+    const Community = require("./community.model");
+    await Community.findByIdAndUpdate(communityId, {
+      $inc: { membersCount: 1 },
+    });
+
+    return await User.findById(userId).select("-password");
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+exports.leaveCommunity = async (userId, communityId) => {
+  try {
+    const user = await User.findById(userId);
+    user.communities = user.communities.filter(
+      (id) => id.toString() !== communityId
+    );
+    await user.save();
+
+    // Update community member count
+    const Community = require("./community.model");
+    await Community.findByIdAndUpdate(communityId, {
+      $inc: { membersCount: -1 },
+    });
+
+    return await User.findById(userId).select("-password");
+  } catch (error) {
+    throw new Error(error);
+  }
+};
