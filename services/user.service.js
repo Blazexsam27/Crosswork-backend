@@ -86,3 +86,46 @@ exports.leaveCommunity = async (userId, communityId) => {
     throw new Error(error);
   }
 };
+
+exports.bookmarkPost = async (userId, postId) => {
+  try {
+    const user = await User.findById(userId);
+    if (!user.bookmarkedPosts.includes(postId)) {
+      user.bookmarkedPosts.push(postId);
+      await user.save();
+    }
+    return await User.findById(userId).select("-password");
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+exports.unbookmarkPost = async (userId, postId) => {
+  try {
+    const user = await User.findById(userId);
+    user.bookmarkedPosts = user.bookmarkedPosts.filter(
+      (id) => id.toString() !== postId
+    );
+    await user.save();
+    return await User.findById(userId).select("-password");
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+exports.getBookmarkedPosts = async (userId) => {
+  try {
+    const user = await User.findById(userId)
+      .populate({
+        path: "bookmarkedPosts",
+        populate: [
+          { path: "author", select: "name profilePic" },
+          { path: "community", select: "name communityIcon" },
+        ],
+      })
+      .select("bookmarkedPosts");
+    return user.bookmarkedPosts;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

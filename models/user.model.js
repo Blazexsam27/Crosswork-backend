@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema(
     connections: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     pendingRequests: [{ type: mongoose.Schema.Types.ObjectId }],
     sentRequests: [{ type: mongoose.Schema.Types.ObjectId }],
+    bookmarkedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
 
     // needed if user forgets his/her pass
     resetPasswordToken: String,

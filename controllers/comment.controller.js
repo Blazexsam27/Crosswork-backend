@@ -47,3 +47,13 @@ exports.deleteComment = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+exports.getCommentsByPostId = async (req, res) => {
+  try {
+    const comments = await commentService.getCommentsByPostId(
+      req.params.postId
+    );
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

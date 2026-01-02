@@ -67,3 +67,35 @@ exports.leaveCommunity = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.bookmarkPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.user.id;
+    const user = await userService.bookmarkPost(userId, postId);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.unbookmarkPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.user.id;
+    const user = await userService.unbookmarkPost(userId, postId);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getBookmarkedPosts = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const posts = await userService.getBookmarkedPosts(userId);
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -50,7 +50,17 @@ exports.createCommunity = async (communityData) => {
 
 exports.updateCommunity = async (id, updatedData) => {
   try {
-    return await Community.findOneAndUpdate({ id }, updatedData, { new: true });
+    // Parse JSON strings if present
+    if (updatedData.rules && typeof updatedData.rules === "string") {
+      updatedData.rules = JSON.parse(updatedData.rules);
+    }
+    if (updatedData.tags && typeof updatedData.tags === "string") {
+      updatedData.tags = JSON.parse(updatedData.tags);
+    }
+
+    return await Community.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    }).populate("moderators", "name email profilePic");
   } catch (error) {
     throw new Error(error);
   }
