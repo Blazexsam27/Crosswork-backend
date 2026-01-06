@@ -73,3 +73,26 @@ exports.deleteCommunity = async (communityId) => {
     throw new Error(error);
   }
 };
+
+exports.searchCommunities = async (query) => {
+  try {
+    if (!query || query.trim() === "") {
+      return [];
+    }
+
+    const searchRegex = new RegExp(query, "i"); // case-insensitive search
+
+    return await Community.find({
+      $or: [
+        { communityName: searchRegex },
+        { description: searchRegex },
+        { tags: searchRegex },
+      ],
+    })
+      .select("communityName description membersCount communityIcon category")
+      .limit(10)
+      .sort({ membersCount: -1 }); // Sort by popularity
+  } catch (error) {
+    throw new Error(error);
+  }
+};

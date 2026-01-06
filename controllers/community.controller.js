@@ -60,3 +60,13 @@ exports.deleteCommunity = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.searchCommunities = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const communities = await communityService.searchCommunities(q);
+    res.status(200).json(communities);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

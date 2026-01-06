@@ -99,3 +99,23 @@ exports.getBookmarkedPosts = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getUserCommunities = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const communities = await userService.getUserCommunities(userId);
+    res.status(200).json(communities);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.searchUsers = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const users = await userService.searchUsers(q);
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

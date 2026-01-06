@@ -6,12 +6,14 @@ const {
   getCommunityById,
   updateCommunity,
   deleteCommunity,
+  searchCommunities,
 } = require("../controllers/community.controller");
 
 const express = require("express");
 const router = express.Router();
 
 router.get("/", auth, getAllCommunities);
+router.get("/search", auth, searchCommunities);
 router.post("/", auth, createCommunity);
 router.get("/name/:name", auth, getCommunityByName);
 router.get("/:id", auth, getCommunityById);

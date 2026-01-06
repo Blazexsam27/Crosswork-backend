@@ -6,6 +6,7 @@ const auth = require("../middlewares/auth.middleware");
 
 router.post("/", auth, postsController.createPost);
 router.get("/all", auth, postsController.getAllPosts);
+router.get("/search", auth, postsController.searchPosts);
 router.get(
   "/community/:communityId",
   auth,

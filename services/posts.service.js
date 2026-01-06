@@ -70,3 +70,53 @@ exports.deletePost = async (postId) => {
     throw new Error(error);
   }
 };
+
+exports.searchPosts = async (query) => {
+  try {
+    if (!query || query.trim() === "") {
+      return [];
+    }
+
+    // Check if query starts with # for hashtag search
+    const isHashtagSearch = query.startsWith("#");
+    const searchTerm = isHashtagSearch
+      ? query.substring(1).trim()
+      : query.trim();
+
+    if (!searchTerm) {
+      return [];
+    }
+
+    const searchRegex = new RegExp(searchTerm, "i");
+
+    let searchCriteria;
+    if (isHashtagSearch) {
+      // Search only in tags for hashtag queries
+      searchCriteria = {
+        tags: searchRegex,
+        isRemoved: false,
+      };
+    } else {
+      // Search in title, body, and tags for regular queries
+      searchCriteria = {
+        $or: [
+          { title: searchRegex },
+          { body: searchRegex },
+          { tags: searchRegex },
+        ],
+        isRemoved: false,
+      };
+    }
+
+    return await Post.find(searchCriteria)
+      .populate("author", "name profilePic")
+      .populate("community", "communityName communityIcon")
+      .select(
+        "title body postType tags score commentCount createdAt community author"
+      )
+      .sort({ score: -1, createdAt: -1 })
+      .limit(15);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
