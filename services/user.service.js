@@ -8,6 +8,14 @@ exports.getUser = async (id) => {
   }
 };
 
+exports.getUserById = async (id) => {
+  try {
+    return await User.findById(id).select("-password");
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 exports.getAllUsers = async () => {
   try {
     return await User.find().select("-password");
